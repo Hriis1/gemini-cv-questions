@@ -15,7 +15,7 @@
 
     <script src="https://code.jquery.com/jquery-3.7.1.js"
         integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
-        
+
     <script>
         $(document).ready(function () {
             $('#submitButton').click(function () {
@@ -23,10 +23,10 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: '/your-endpoint',
+                    url: 'include/getQuestionsGemini.php',
                     data: { job_title: title },
                     success: function (response) {
-                        console.log("success");
+                        console.log(response);
                     },
                     error: function () {
                         alert('Error sending handling request');
