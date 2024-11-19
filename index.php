@@ -22,11 +22,15 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="responseModalLabel">Отговор</h5>
+                        <h5 class="modal-title" id="responseModalLabel">Възможни въпроси</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modalBody">
-                        <!-- Response text will be inserted here -->
+                        <div id="questionsContainer" class="d-none">
+                        </div>
+                        <div id="loadingSpinner" class="spinner-border" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Затвори</button>
@@ -47,6 +51,13 @@
             $('#submitButton').click(function () {
                 var title = $('#titleInput').val();
 
+                // Show the modal with the loading animation
+                $('#questionsContainer').addClass("d-none");
+                $('#loadingSpinner').removeClass("d-none");
+                var responseModal = new bootstrap.Modal($('#responseModal'));
+                responseModal.show();
+
+                // Make the AJAX request
                 $.ajax({
                     type: 'POST',
                     url: 'include/genQuestions.php',
@@ -56,20 +67,18 @@
                         var parsedResponse = JSON.parse(response);
 
                         // Format the array into HTML content
-                        formattedResponse = "";
+                        var formattedResponse = "";
                         parsedResponse.forEach(function (item) {
                             formattedResponse += "<p>" + item + "</p>";
                         });
 
-                        // Set the content of the modal body
-                        $('#modalBody').html(formattedResponse);
-
-                        // Show the modal
-                        var responseModal = new bootstrap.Modal($('#responseModal'));
-                        responseModal.show();
+                        //Show the questions 
+                        $('#questionsContainer').removeClass("d-none");
+                        $('#loadingSpinner').addClass("d-none");
+                        $('#questionsContainer').html(formattedResponse);
                     },
                     error: function () {
-                        alert('Error sending handling request');
+                        $('#modalBody').html('<p class="text-danger">Error handling request</p>');
                     }
                 });
             });

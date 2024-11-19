@@ -7,7 +7,7 @@ $dotenv->load();
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if (isset($_POST['job_title'])) {
         $geminiAPIkey = $_ENV['GEMINI_FLASH_API_KEY'];
-        $numAttempts = 5;
+        $numAttempts = 4;
         for ($i = 0; $i < $numAttempts; $i++) {
             $response = genQuestions($_POST['job_title'], $geminiAPIkey);
             if ($response[0]) {
