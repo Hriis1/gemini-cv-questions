@@ -17,34 +17,35 @@
         <button id="submitButton">Изпрати</button>
 
         <!-- Modal -->
-        <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel"
+        <div class="modal fade" id="responseModal" tabindex="-1" role="dialog" aria-labelledby="responseModalLabel"
             aria-hidden="true">
-            <div class="modal-dialog">
+            <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="responseModalLabel">Възможни въпроси</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body" id="modalBody">
                         <div id="questionsContainer" class="d-none">
                         </div>
                         <div id="loadingSpinner" class="spinner-border" role="status">
-                            <span class="visually-hidden">Loading...</span>
+                            <span class="sr-only"></span>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Затвори</button>
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    <script src="https://code.jquery.com/jquery-3.6.1.js"
+        integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1"
         crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.7.1.js"
-        integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
+        crossorigin="anonymous"></script>
 
     <script>
         $(document).ready(function () {
@@ -54,15 +55,14 @@
                 // Show the modal with the loading animation
                 $('#questionsContainer').addClass("d-none");
                 $('#loadingSpinner').removeClass("d-none");
-                var responseModal = new bootstrap.Modal($('#responseModal'));
-                responseModal.show();
+                $('#responseModal').modal('show');
 
-                // Make the AJAX request
-                $.ajax({
-                    type: 'POST',
-                    url: 'include/genQuestions.php',
-                    data: { job_title: title },
-                    success: function (response) {
+                // Make the POST request
+                $.post('include/genQuestions.php',
+                    {
+                        job_title: title
+                    },
+                    function (response) {
                         console.log(response);
                         var parsedResponse = JSON.parse(response);
 
@@ -92,11 +92,9 @@
                             }
                         }
                         typeTextSequentially(0);
-                    },
-                    error: function () {
+                    }).fail(function () {
                         $('#modalBody').html('<p class="text-danger">Error handling request</p>');
-                    }
-                });
+                    });
             });
         });
     </script>
