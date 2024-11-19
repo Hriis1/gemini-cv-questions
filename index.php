@@ -66,16 +66,32 @@
                         console.log(response);
                         var parsedResponse = JSON.parse(response);
 
-                        // Format the array into HTML content
-                        var formattedResponse = "";
-                        parsedResponse.forEach(function (item) {
-                            formattedResponse += "<p>" + item + "</p>";
-                        });
-
-                        //Show the questions 
-                        $('#questionsContainer').removeClass("d-none");
+                        $('#questionsContainer').html("").removeClass("d-none");
                         $('#loadingSpinner').addClass("d-none");
-                        $('#questionsContainer').html(formattedResponse);
+
+                        function typeTextSequentially(index) {
+                            if (index < parsedResponse.length) {
+                                var item = parsedResponse[index];
+                                var paragraph = $("<p></p>");
+                                $('#questionsContainer').append(paragraph);
+
+                                function typeText(element, text, charIndex) {
+                                    if (charIndex < text.length) {
+                                        element.append(text.charAt(charIndex));
+                                        setTimeout(function () {
+                                            typeText(element, text, charIndex + 1);
+                                        }, 20); // Adjust the speed of typing here
+                                    } else {
+                                        // Move to the next paragraph after the current one is finished
+                                        setTimeout(function () {
+                                            typeTextSequentially(index + 1);
+                                        }, 100); // Adjust the delay between paragraphs here
+                                    }
+                                }
+                                typeText(paragraph, item, 0);
+                            }
+                        }
+                        typeTextSequentially(0);
                     },
                     error: function () {
                         $('#modalBody').html('<p class="text-danger">Error handling request</p>');
