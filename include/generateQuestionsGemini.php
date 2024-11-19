@@ -11,7 +11,8 @@ function genQuestions($jobTitle, $apiKey)
                 'parts' => [
                     [
                         'text' => 'I will give you a job title. I want you to generate 10 possible short questions that the candidate could be asked.
-                        I want the questions to be indexed and always in bulgarian, no matter what language is the title',
+                        I want the questions to be indexed and always in bulgarian, no matter what language is the title.
+                        Send nothing else but the questions!',
                     ]
                 ]
             ],
@@ -51,7 +52,7 @@ function genQuestions($jobTitle, $apiKey)
 
         // Extract and print the text content
         if (isset($decodedResponse['candidates'][0]['content']['parts'][0]['text'])) {
-            return $decodedResponse['candidates'][0]['content']['parts'][0]['text'];
+            return [true, $decodedResponse['candidates'][0]['content']['parts'][0]['text']];
         } else {
             //if the text field was not set
             return [false, 'Error with gemini response layout'];
