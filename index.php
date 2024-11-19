@@ -11,9 +11,30 @@
 </head>
 
 <body>
-    <label for="titleInput">Заглавие:</label>
-    <input type="text" id="titleInput" name="title">
-    <button id="submitButton">Изпрати</button>
+    <main>
+        <label for="titleInput">Заглавие:</label>
+        <input type="text" id="titleInput" name="title">
+        <button id="submitButton">Изпрати</button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="responseModal" tabindex="-1" aria-labelledby="responseModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="responseModalLabel">Отговор</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" id="modalBody">
+                        <!-- Response text will be inserted here -->
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Затвори</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
@@ -32,6 +53,11 @@
                     data: { job_title: title },
                     success: function (response) {
                         console.log(response);
+                        
+                        // Show the modal
+                        $('#modalBody').text(response);
+                        var responseModal = new bootstrap.Modal($('#responseModal'));
+                        responseModal.show();
                     },
                     error: function () {
                         alert('Error sending handling request');
