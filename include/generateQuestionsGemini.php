@@ -10,8 +10,8 @@ function genQuestions($jobTitle, $apiKey)
                 'role' => 'user',
                 'parts' => [
                     [
-                        'text' => 'I will give you a job title. I want you to generate possible questions that the candidate could be asked.
-                        I want the questions to be indexed, seperated by new lines and always in bulgarian, no matter what language is the title',
+                        'text' => 'I will give you a job title. I want you to generate 10 possible short questions that the candidate could be asked.
+                        I want the questions to be indexed and always in bulgarian, no matter what language is the title',
                     ]
                 ]
             ],
@@ -47,29 +47,15 @@ function genQuestions($jobTitle, $apiKey)
     if ($error) {
         return [false, 'Curl error: ' . $error];
     } else {
-        return $response;
-       /*  $decodedResponse = json_decode($response, true);
+       $decodedResponse = json_decode($response, true);
 
         // Extract and print the text content
         if (isset($decodedResponse['candidates'][0]['content']['parts'][0]['text'])) {
-            //if the text field is set
-            $str = $decodedResponse['candidates'][0]['content']['parts'][0]['text'];
-            $str = preg_replace('/^[^{]*({.*})[^}]*$/s', '$1', $str); //trim before { and after }
-            $decoded = json_decode($str, true);
-
-            if ($decoded === null && json_last_error() !== JSON_ERROR_NONE) {
-                //if json couldnt be built from the string
-                return [false, "Error decoding JSON string: " . json_last_error_msg()];
-            } else {
-                //if everything went fine
-                //$json = [true, json_encode($decoded, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE)];
-                $json = [true, $decoded];
-                return $json;
-            }
+            return $decodedResponse['candidates'][0]['content']['parts'][0]['text'];
         } else {
             //if the text field was not set
             return [false, 'Error with gemini response layout'];
-        } */
+        } 
     }
 }
 
