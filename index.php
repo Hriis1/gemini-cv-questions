@@ -80,7 +80,7 @@
                                         element.append(text.charAt(charIndex));
                                         setTimeout(function () {
                                             typeText(element, text, charIndex + 1);
-                                        }, 20); // Adjust the speed of typing here
+                                        }, 15); // Adjust the speed of typing here
                                     } else {
                                         // Move to the next paragraph after the current one is finished
                                         setTimeout(function () {
