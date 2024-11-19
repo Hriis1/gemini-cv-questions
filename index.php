@@ -53,9 +53,18 @@
                     data: { job_title: title },
                     success: function (response) {
                         console.log(response);
-                        
+                        var parsedResponse = JSON.parse(response);
+
+                        // Format the array into HTML content
+                        formattedResponse = "";
+                        parsedResponse.forEach(function (item) {
+                            formattedResponse += "<p>" + item + "</p>";
+                        });
+
+                        // Set the content of the modal body
+                        $('#modalBody').html(formattedResponse);
+
                         // Show the modal
-                        $('#modalBody').text(response);
                         var responseModal = new bootstrap.Modal($('#responseModal'));
                         responseModal.show();
                     },

@@ -48,15 +48,22 @@ function genQuestions($jobTitle, $apiKey)
     if ($error) {
         return [false, 'Curl error: ' . $error];
     } else {
-       $decodedResponse = json_decode($response, true);
+        $decodedResponse = json_decode($response, true);
 
         // Extract and print the text content
         if (isset($decodedResponse['candidates'][0]['content']['parts'][0]['text'])) {
-            return [true, $decodedResponse['candidates'][0]['content']['parts'][0]['text']];
+            $questions = explode("\n", $decodedResponse['candidates'][0]['content']['parts'][0]['text']);
+            
+            // Remove empty elements
+            $questions = array_filter($questions, function ($value) {
+                return trim($value) !== '';
+            });
+
+            return [true, $questions];
         } else {
             //if the text field was not set
             return [false, 'Error with gemini response layout'];
-        } 
+        }
     }
 }
 
