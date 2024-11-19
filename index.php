@@ -23,7 +23,7 @@
 
                 $.ajax({
                     type: 'POST',
-                    url: 'include/getQuestionsGemini.php',
+                    url: 'include/genQuestions.php',
                     data: { job_title: title },
                     success: function (response) {
                         console.log(response);
